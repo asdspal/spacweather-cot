@@ -112,8 +112,23 @@ class SpaceWeatherCoTDataset(QADataset):
         return tuple(datasets)
 
     def _get_answer(self, row) -> str:
-        """The forecaster's own summary followed by forecast, as the target text."""
+        """The forecaster's summary+forecast, plus NOAA's numeric 3-day guidance.
+
+        The discussion prose is qualitative; the probabilities live in the paired
+        3-Day Forecast product. Appending them as text teaches the model the
+        numeric forecast style and makes its numbers parseable for eval.
+        """
         parts = [p for p in (row.get("rationale"), row.get("forecast")) if p]
+        scalars = row.get("scalars") or {}
+        guidance = []
+        if "kp_max_3day" in scalars:
+            guidance.append(f"greatest expected 3 hr Kp {scalars['kp_max_3day']:.2f}")
+        if "r1_r2_radio_blackout_pct" in scalars:
+            guidance.append(f"R1-R2 radio blackout chance {scalars['r1_r2_radio_blackout_pct']:.0f}%")
+        if "s1_radiation_storm_pct" in scalars:
+            guidance.append(f"S1 radiation storm chance {scalars['s1_radiation_storm_pct']:.0f}%")
+        if guidance:
+            parts.append("NOAA 3-day forecast guidance: " + "; ".join(guidance) + ".")
         return "\n\n".join(parts)
 
     def _get_pre_prompt(self, row) -> str:
