@@ -82,13 +82,19 @@ def smoke(max_samples: int = 4) -> str:
     secrets=[modal.Secret.from_dict({"HF_TOKEN": os.environ.get("HF_TOKEN", "")})],
 )
 def train(epochs: int = 20, batch_size: int = 4, max_samples: int = 0) -> str:
-    """Fine-tune OpenTSLM-SP on SpaceWeather-CoT. Writes to /runs/<ts>/."""
+    """Fine-tune OpenTSLM-SP on SpaceWeather-CoT. Writes to /runs/<ts>/.
+
+    Streams the training script's stdout/stderr line-by-line as it runs (instead of
+    buffering until exit) so `modal run` output shows live progress even across a
+    preemption-triggered restart.
+    """
     import subprocess
+    import sys
     import time
 
     out_dir = f"/runs/spacweather-cot-{int(time.time())}"
     cmd = [
-        "python", "/opt/work/train_spacweather.py",
+        "python", "-u", "/opt/work/train_spacweather.py",
         "--data", "/data/spacweather_cot.jsonl",
         "--out", out_dir,
         "--epochs", str(epochs),
@@ -98,9 +104,11 @@ def train(epochs: int = 20, batch_size: int = 4, max_samples: int = 0) -> str:
     ]
     if max_samples:
         cmd += ["--max-samples", str(max_samples)]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    print(proc.stdout[-8000:])
-    print(proc.stderr[-4000:])
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    for line in proc.stdout:
+        print(line, end="")
+        sys.stdout.flush()
+    proc.wait()
     runs_vol.commit()
     return f"exit={proc.returncode} out={out_dir}"
 
