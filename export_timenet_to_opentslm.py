@@ -19,7 +19,7 @@ object per issuance:
 Series values keep ``None`` for missing timesteps; the OpenTSLM dataset class decides
 how to handle them at batch time.
 
-Temporal split (no random leakage): train < 2024-08-01, val = August 2024,
+Temporal split (no random leakage): train < 2024-08-16, val = Aug 16-31 2024,
 test >= 2024-10-01. September 2024 has no archived discussions (a real NOAA gap),
 and the held-out months include the October 2024 geomagnetic storms.
 
@@ -41,7 +41,7 @@ from timenet import TimeNet
 from timenet.types import AnswerTask, ScalarPredictionTask, read_value
 
 # Temporal split boundaries on the issuance timestamp (UTC).
-VAL_START = date(2024, 8, 1)
+VAL_START = date(2024, 8, 16)
 TEST_START = date(2024, 10, 1)
 
 
