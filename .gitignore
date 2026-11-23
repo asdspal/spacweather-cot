@@ -5,3 +5,11 @@ spacweather_cot_v*.jsonl
 runs/
 *.pt
 site/recording/
+pitch_script.md
+
+# Intermediate audio/video, superseded by demo-assets/SpaceWeather-CoT-Final.mp4
+demo-assets/*.flac
+demo-assets/spacweather-cot-pitch-slides.mp4
+demo-assets/spacweather-cot-demo-30s.mp4
+demo-assets/spacweather-cot-walkthrough.mp4
+
