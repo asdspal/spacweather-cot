@@ -1,5 +1,7 @@
 __pycache__/
 *.pyc
 spacweather_cot.jsonl
+spacweather_cot_v*.jsonl
 runs/
 *.pt
+site/recording/

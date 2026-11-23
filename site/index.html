@@ -65,20 +65,30 @@
   }
 
   /* ---- hero / thesis ---- */
-  .hero{ padding:92px 0 64px; }
-  .hero h1{
+  .hero{ padding:40px 0 64px; }
+  .intro{ padding:108px 0 86px; min-height:calc(100vh - 56px); display:flex; align-items:center; }
+  .intro .wrap{ width:100%; }
+  .hero h1, .intro h1{
     font-family:'Spectral', serif; font-weight:500; font-style:normal;
     font-size:clamp(2.1rem, 4.4vw, 3.3rem);
     line-height:1.12; letter-spacing:-0.01em;
     max-width:17ch; margin:0 0 22px;
     color:var(--paper);
   }
-  .hero h1 em{ font-style:italic; color:var(--amber); }
-  .hero p.lede{
+  .intro h1{ max-width:19ch; }
+  .hero h1 em, .intro h1 em{ font-style:italic; color:var(--amber); }
+  .hero p.lede, .intro p.lede{
     max-width:62ch; color:var(--paper-dim); font-size:1.08rem; line-height:1.65;
     margin:0 0 44px;
   }
-  .hero p.lede strong{ color:var(--paper); font-weight:500; }
+  .hero p.lede strong, .intro p.lede strong{ color:var(--paper); font-weight:500; }
+
+  .scrolldown{
+    font-family:'Courier Prime', monospace; font-size:0.84rem; letter-spacing:0.02em;
+    color:var(--amber); text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    border-bottom:1px solid var(--amber-dim); padding-bottom:2px;
+  }
+  .scrolldown:hover{ border-bottom-color:var(--amber); }
 
   .compare{
     display:grid; grid-template-columns:1fr 1fr; gap:1px;
@@ -221,7 +231,25 @@
 
 <main id="top">
 
-  <section class="hero">
+  <section class="intro">
+    <div class="wrap">
+      <h1>A forecaster explains the Sun by hand, twice a day. <em>We taught a model to try.</em></h1>
+      <p class="lede">
+        Solar flares and geomagnetic storms threaten power grids, GPS, satellites,
+        and aviation. NOAA's Space Weather Prediction Center forecasts them from raw
+        instrument readings, written out in plain English, every twelve hours,
+        by a person. <strong>SpaceWeather-CoT</strong> is a new TimeNet dataset
+        pairing that forecaster's own words with the data behind them, and two small
+        models built on it: one that writes a forecast in the forecaster's own
+        voice, and one that calculates the numbers behind it. The result explains
+        itself in a forecaster's own language — and says, in public, exactly where
+        it still gets it wrong.
+      </p>
+      <a class="scrolldown" href="#demo">See it read the same data a forecaster did ↓</a>
+    </div>
+  </section>
+
+  <section class="hero" id="demo">
     <div class="wrap">
       <h1>Same instrument data. <em>Two forecasts</em> of the same storm.</h1>
       <p class="lede">
