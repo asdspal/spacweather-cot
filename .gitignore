@@ -7,6 +7,10 @@ runs/
 site/recording/
 pitch_script.md
 
+# Local coding-agent / design-tool state, not project source
+.impeccable/
+.vercel/
+
 # Intermediate audio/video, superseded by demo-assets/SpaceWeather-CoT-Final.mp4
 demo-assets/*.flac
 demo-assets/spacweather-cot-pitch-slides.mp4
